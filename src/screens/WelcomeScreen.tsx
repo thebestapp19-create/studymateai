@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ArrowRightIcon, CheckIcon } from '../components/icons'
 import { GRADES, saveUserProfile, type UserProfile } from '../lib/userProfile'
 
 type WelcomeScreenProps = {
@@ -72,13 +73,13 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
                   type="button"
                   aria-pressed={selected}
                   onClick={() => setGrade(option)}
-                  className={`rounded-full border px-4 py-2.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors ${
                     selected
                       ? 'border-brand bg-brand/15 text-brand'
                       : 'border-line bg-card text-fg hover:border-line-strong'
                   }`}
                 >
-                  {selected && <span className="mr-1.5">✓</span>}
+                  {selected && <CheckIcon className="h-3.5 w-3.5" />}
                   {option}
                 </button>
               )
@@ -92,7 +93,7 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
           className="mt-12 flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-strong disabled:cursor-not-allowed disabled:bg-card disabled:text-faint"
         >
           Continue
-          <span aria-hidden="true">→</span>
+          <ArrowRightIcon className="h-5 w-5" />
         </button>
       </form>
     </div>

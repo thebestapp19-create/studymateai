@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { BoltIcon, ClockIcon, FlameIcon, TargetIcon } from '../components/icons'
+import { MascotSay } from '../components/Mascot'
 import Owl from '../components/Owl'
 import Sparkline from '../components/ui/Sparkline'
 import {
@@ -11,8 +12,9 @@ import {
   StatTile,
 } from '../components/ui/primitives'
 import { studyStreak } from '../lib/engine/insights'
+import { progressMoment } from '../lib/engine/mascot'
 import { effectiveMastery } from '../lib/engine/mastery'
-import { readinessFor, upcomingExams } from '../lib/engine/readiness'
+import { overallReadiness, readinessFor, upcomingExams } from '../lib/engine/readiness'
 import { formatDuration, plural, relativeDay } from '../lib/format'
 import { useNav } from '../lib/nav'
 import { useNow } from '../lib/useNow'
@@ -89,10 +91,12 @@ export default function ProgressScreen() {
         <h1 className="text-[1.8rem] leading-none font-extrabold tracking-[-0.03em] text-fg">
           Progress
         </h1>
-        <p className="mt-1.5 text-sm text-muted">
-          Everything here comes from sessions you have actually finished.
-        </p>
       </header>
+
+      <MascotSay
+        moment={progressMoment(state, overallReadiness(state, now), now)}
+        className="animate-rise mt-4"
+      />
 
       {focus && report && (
         <Card className="animate-rise mt-6 p-5" sheen>

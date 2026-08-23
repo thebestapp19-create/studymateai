@@ -39,20 +39,20 @@ type Face = {
   /** How far the head tips, in degrees. */
   tilt: number
   beak: 'closed' | 'open'
-  wave: boolean
+  pose: 'rest' | 'wave' | 'cheer'
   extras: Extras
   cheeks: boolean
 }
 
 const FACES: Record<OwlExpression, Face> = {
-  happy: { eye: 'open', look: [0, 0], brow: [0.4, 4], tilt: 0, beak: 'closed', wave: false, extras: null, cheeks: true },
-  excited: { eye: 'wide', look: [0, -0.8], brow: [3, 8], tilt: -3, beak: 'open', wave: false, extras: 'sparkles', cheeks: true },
-  proud: { eye: 'archUp', look: [0, 0], brow: [2.4, 6], tilt: 0, beak: 'closed', wave: false, extras: 'star', cheeks: true },
-  focused: { eye: 'half', look: [0, 1.2], brow: [-2.4, -13], tilt: 0, beak: 'closed', wave: false, extras: null, cheeks: false },
-  thinking: { eye: 'open', look: [-2.2, -1.8], brow: [-0.4, 2], browRight: [3.6, -6], tilt: 6, beak: 'closed', wave: false, extras: 'dots', cheeks: false },
-  encouraging: { eye: 'open', look: [0.6, 0], brow: [1.8, 5], tilt: -4, beak: 'closed', wave: true, extras: null, cheeks: true },
-  surprised: { eye: 'wide', look: [0, 0.4], brow: [4.4, 0], tilt: 0, beak: 'open', wave: false, extras: null, cheeks: false },
-  sleepy: { eye: 'archDown', look: [0, 0], brow: [-1.4, -4], tilt: 8, beak: 'closed', wave: false, extras: 'zzz', cheeks: false },
+  happy: { eye: 'open', look: [0, 0], brow: [0.4, 4], tilt: 0, beak: 'closed', pose: 'wave', extras: null, cheeks: true },
+  excited: { eye: 'wide', look: [0, -0.8], brow: [3, 8], tilt: -3, beak: 'open', pose: 'cheer', extras: 'sparkles', cheeks: true },
+  proud: { eye: 'archUp', look: [0, 0], brow: [2.4, 6], tilt: 0, beak: 'closed', pose: 'cheer', extras: 'star', cheeks: true },
+  focused: { eye: 'half', look: [0, 1.2], brow: [-2.4, -13], tilt: 0, beak: 'closed', pose: 'rest', extras: null, cheeks: false },
+  thinking: { eye: 'open', look: [-2.2, -1.8], brow: [-0.4, 2], browRight: [3.6, -6], tilt: 6, beak: 'closed', pose: 'rest', extras: 'dots', cheeks: false },
+  encouraging: { eye: 'open', look: [0.6, 0], brow: [1.8, 5], tilt: -4, beak: 'closed', pose: 'wave', extras: null, cheeks: true },
+  surprised: { eye: 'wide', look: [0, 0.4], brow: [4.4, 0], tilt: 0, beak: 'open', pose: 'rest', extras: null, cheeks: false },
+  sleepy: { eye: 'archDown', look: [0, 0], brow: [-1.4, -4], tilt: 8, beak: 'closed', pose: 'rest', extras: 'zzz', cheeks: false },
 }
 
 const EYE_Y = 56
@@ -124,12 +124,15 @@ export default function Owl({
   expression = 'happy',
   size = 96,
   variant = 'full',
+  bounce = false,
   className = '',
 }: {
   expression?: OwlExpression
   size?: number
   /** `mark` drops the small detail that turns to mush below ~32px. */
   variant?: 'full' | 'mark'
+  /** A single hop, for the moment a celebration lands. */
+  bounce?: boolean
   className?: string
 }) {
   const face = FACES[expression]
@@ -159,7 +162,7 @@ export default function Owl({
         </linearGradient>
       </defs>
 
-      <g className="owl-float">
+      <g className={bounce ? 'owl-celebrate' : 'owl-float'}>
         {detailed && (
           // Feet first, so the body sits on top of them.
           <g stroke="#d18723" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round" fill="none">
@@ -168,10 +171,32 @@ export default function Owl({
           </g>
         )}
 
-        {face.wave && detailed && (
+        {face.pose === 'wave' && detailed && (
           <g className="owl-wave" style={{ transformOrigin: '30px 76px' }}>
             <path
               d="M30 68 q-14 2 -18 -10 q9 -6 20 -2 z"
+              fill="url(#owl-body)"
+              stroke="#ffffff"
+              strokeOpacity={0.12}
+              strokeWidth={1.3}
+              strokeLinejoin="round"
+            />
+          </g>
+        )}
+
+
+        {face.pose === 'cheer' && detailed && (
+          <g className="owl-cheer">
+            <path
+              d="M28 66 q-13 -6 -14 -19 q10 -3 18 8 z"
+              fill="url(#owl-body)"
+              stroke="#ffffff"
+              strokeOpacity={0.12}
+              strokeWidth={1.3}
+              strokeLinejoin="round"
+            />
+            <path
+              d="M92 66 q13 -6 14 -19 q-10 -3 -18 8 z"
               fill="url(#owl-body)"
               stroke="#ffffff"
               strokeOpacity={0.12}

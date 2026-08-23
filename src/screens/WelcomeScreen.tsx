@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowRightIcon, SparkleIcon } from '../components/icons'
 import Owl from '../components/Owl'
+import { OWL_NAME } from '../lib/engine/mascot'
 import { Button } from '../components/ui/primitives'
 import { useDispatch } from '../lib/store/context'
 
@@ -40,8 +41,15 @@ export default function WelcomeScreen() {
           className="animate-rise mt-4 text-[1.05rem] leading-relaxed text-muted"
           style={{ animationDelay: '120ms' }}
         >
-          That is the whole setup. No account, no questionnaire — StudyMate learns
-          your level from how you actually answer.
+          I’m {OWL_NAME}. I’ll work out what you’re weak at and tell you what to
+          study — but I need something to call you first.
+        </p>
+
+        <p
+          className="animate-rise mt-2.5 text-sm leading-relaxed text-faint"
+          style={{ animationDelay: '150ms' }}
+        >
+          No account, no questionnaire. That’s the whole setup.
         </p>
 
         <div className="animate-rise mt-9" style={{ animationDelay: '180ms' }}>

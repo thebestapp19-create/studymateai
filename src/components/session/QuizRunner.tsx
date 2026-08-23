@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArrowRightIcon, CheckIcon, XIcon } from '../icons'
-import { MascotHero } from '../Mascot'
+import { MascotHero, MascotReaction } from '../Mascot'
 import Owl from '../Owl'
 import OverlayShell from '../ui/OverlayShell'
 import { Button, Card, Eyebrow, ProgressBar } from '../ui/primitives'
@@ -15,7 +15,7 @@ import {
 } from '../../lib/content/items'
 import type { Band } from '../../lib/curriculum'
 import { sessionFeedback } from '../../lib/engine/insights'
-import { quizMoment } from '../../lib/engine/mascot'
+import { answerReaction, quizMoment } from '../../lib/engine/mascot'
 import { effectiveMastery, statFor, type AnswerResult } from '../../lib/engine/mastery'
 import { readinessFor } from '../../lib/engine/readiness'
 import { clamp, plural } from '../../lib/format'
@@ -115,6 +115,13 @@ export default function QuizRunner({
 
   const answered = answers.length
   const correctCount = answers.filter((entry) => entry.result.correct).length
+
+  // How many in a row are right, for the owl to notice.
+  let runStreak = 0
+  for (let index = answers.length - 1; index >= 0; index -= 1) {
+    if (!answers[index].result.correct) break
+    runStreak += 1
+  }
 
   function choose(index: number) {
     if (phase !== 'question' || !current) return
@@ -332,15 +339,18 @@ export default function QuizRunner({
 
         {phase === 'feedback' && (
           <Card className="animate-rise mt-4 p-4">
-            <p
-              className={`text-sm font-semibold ${
-                selected === item.answerIndex ? 'text-good' : 'text-warn'
-              }`}
+            <MascotReaction
+              moment={answerReaction({
+                correct: selected === item.answerIndex,
+                difficulty: item.difficulty,
+                streak: runStreak,
+              })}
+              label={selected === item.answerIndex ? 'Correct' : 'Not quite'}
+              labelClass={selected === item.answerIndex ? 'text-good' : 'text-warn'}
             >
-              {selected === item.answerIndex ? 'Correct' : 'Not quite'}
-            </p>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted">{item.explanation}</p>
-            <p className="mt-2.5 text-xs text-faint">Skill: {item.skill}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted">{item.explanation}</p>
+              <p className="mt-2.5 text-xs text-faint">Skill: {item.skill}</p>
+            </MascotReaction>
           </Card>
         )}
       </div>

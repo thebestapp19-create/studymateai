@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { CheckIcon, ClockIcon, ShieldIcon, TrashIcon } from '../components/icons'
+import Owl from '../components/Owl'
 import Sheet from '../components/ui/Sheet'
 import { Button, Card, Chip, Eyebrow, SectionHeading } from '../components/ui/primitives'
 import { GRADES, gradeById } from '../lib/curriculum'
 import { studyStreak } from '../lib/engine/insights'
+import { OWL_NAME, partnerSummary } from '../lib/engine/mascot'
 import { clamp, formatDuration, plural } from '../lib/format'
 import { useNav } from '../lib/nav'
 import { clearState } from '../lib/store/persistence'
@@ -22,6 +24,7 @@ export default function ProfileScreen() {
   const [confirmReset, setConfirmReset] = useState(false)
 
   const grade = gradeById(state.profile.gradeId ?? undefined)
+  const partner = partnerSummary(state)
   const totalMinutes = Object.values(state.days).reduce((sum, day) => sum + day.minutes, 0)
   const streak = studyStreak(state)
 
@@ -56,6 +59,23 @@ export default function ProfileScreen() {
             : `${formatDuration(totalMinutes)} studied in total`}
         </p>
       </header>
+
+      <section className="mt-6">
+        <Card className="flex items-center gap-3.5 p-4" sheen>
+          <Owl expression="happy" size={64} className="shrink-0" />
+          <div className="min-w-0">
+            <p className="text-[0.95rem] font-bold tracking-tight text-fg">
+              {OWL_NAME} · your study partner
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-muted">{partner.line}</p>
+            {partner.sessions > 0 && (
+              <p className="mt-1 text-[0.7rem] text-faint">
+                Studying together since {partner.since.toLowerCase()}
+              </p>
+            )}
+          </div>
+        </Card>
+      </section>
 
       <section className="mt-6">
         <label htmlFor="profile-name" className="block">

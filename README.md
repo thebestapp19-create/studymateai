@@ -71,13 +71,18 @@ a selected state, and a progress bar across the belly. Eight expressions
 than eight separate drawings, and a `mark` variant drops the fine detail below
 about 32px. `npm run dev` and open `/owl.html` for the full sheet.
 
-`src/lib/engine/mascot.ts` decides when the owl speaks and what it says. Every
-line is triggered by something the app actually knows — a streak milestone
-reached today, readiness up five points this week, two days away, an exam
-inside three days, the daily goal met — and lines rotate by day so the same
-trigger does not produce the same sentence twice. When nothing is worth saying
-it returns `null` and no owl appears, which is what keeps it from becoming
-furniture.
+`src/lib/engine/mascot.ts` is the owl's voice. It is called Otto, it speaks in
+the first person, and it behaves like a study partner rather than a logo: it
+greets you, reacts to every answer while you work, notices runs of correct
+ones, asks how a flashcard went, reads your progress back to you, and says so
+when you have been away. Tapping the owl moves to the next thing it has to say.
+
+Every line is still built from something the app actually knows — a streak
+milestone reached today, readiness up five points this week, two days away, an
+exam inside three days, the daily goal met — and lines rotate by day so the
+same trigger never repeats itself. It stays honest too: a big mastery gain on a
+weak session gets "and mastery still went up, because you were starting from
+behind", not applause.
 
 ## Data
 

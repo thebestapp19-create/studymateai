@@ -20,7 +20,7 @@ import {
   SectionHeading,
   StatTile,
 } from '../components/ui/primitives'
-import { MascotNote } from '../components/Mascot'
+import { MascotSay } from '../components/Mascot'
 import Owl from '../components/Owl'
 import { examInsight, studyStreak } from '../lib/engine/insights'
 import { homeMoment } from '../lib/engine/mascot'
@@ -115,12 +115,7 @@ export default function HomeScreen() {
         <figcaption className="mt-1 text-xs text-faint">— {quote.author}</figcaption>
       </figure>
 
-      {moment && (
-        <MascotNote
-          moment={moment}
-          className="animate-rise mt-5"
-        />
-      )}
+      <MascotSay moment={moment} className="animate-rise mt-5" />
 
       {focus && report ? (
         <>

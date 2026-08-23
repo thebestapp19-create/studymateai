@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { MascotHero } from '../Mascot'
+import Owl from '../Owl'
 import OverlayShell from '../ui/OverlayShell'
 import { Button, Card, Eyebrow, ProgressBar } from '../ui/primitives'
 import {
@@ -11,7 +12,7 @@ import {
   type Flashcard,
 } from '../../lib/content/flashcards'
 import type { Band } from '../../lib/curriculum'
-import { flashcardMoment } from '../../lib/engine/mascot'
+import { cardPrompt, flashcardMoment } from '../../lib/engine/mascot'
 import { effectiveMastery, statFor } from '../../lib/engine/mastery'
 import { readinessFor } from '../../lib/engine/readiness'
 import { clamp } from '../../lib/format'
@@ -86,6 +87,11 @@ export default function FlashcardRunner({
 
   const card = queue[index] ?? null
   const rated = updates.length
+  const prompt = cardPrompt({
+    known: updates.filter((update) => update.rating === 'known').length,
+    unknown: updates.filter((update) => update.rating === 'unknown').length,
+    seen: rated,
+  })
 
   function rate(rating: CardRating) {
     if (!card) return
@@ -280,7 +286,10 @@ export default function FlashcardRunner({
 
       {flipped ? (
         <div className="animate-rise mt-5">
-          <p className="mb-2.5 text-center text-xs text-faint">How well did you know it?</p>
+          <div className="mb-2.5 flex items-center justify-center gap-2">
+            <Owl expression={prompt.expression} size={34} className="shrink-0" />
+            <p className="text-xs text-faint">{prompt.line}</p>
+          </div>
           <div className="grid grid-cols-3 gap-2">
             {RATINGS.map((option) => (
               <button

@@ -15,6 +15,10 @@ npm run dev
 
 `npm run build` type-checks and bundles; `npm run lint` runs oxlint.
 
+`npm run build:preview` additionally writes `dist/studymate-preview.html` — the
+whole app inlined into one file, for opening straight from disk or hosting
+anywhere static.
+
 ## How it fits together
 
 ```

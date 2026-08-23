@@ -20,7 +20,10 @@ import {
   SectionHeading,
   StatTile,
 } from '../components/ui/primitives'
+import { MascotNote } from '../components/Mascot'
+import Owl from '../components/Owl'
 import { examInsight, studyStreak } from '../lib/engine/insights'
+import { homeMoment } from '../lib/engine/mascot'
 import { buildDailyPlan, type PlanItem } from '../lib/engine/planner'
 import { readinessFor, upcomingExams } from '../lib/engine/readiness'
 import { statFor } from '../lib/engine/mastery'
@@ -62,6 +65,10 @@ export default function HomeScreen() {
   )
   const plan = useMemo(() => buildDailyPlan(state, now), [state, now])
   const insight = focus && report ? examInsight(focus, report) : null
+  const moment = useMemo(
+    () => homeMoment(state, report, plan[0] ?? null, now),
+    [state, report, plan, now],
+  )
 
   const studied = minutesToday(state, now)
   const goal = state.profile.dailyGoalMinutes
@@ -107,6 +114,13 @@ export default function HomeScreen() {
         </blockquote>
         <figcaption className="mt-1 text-xs text-faint">— {quote.author}</figcaption>
       </figure>
+
+      {moment && (
+        <MascotNote
+          moment={moment}
+          className="animate-rise mt-5"
+        />
+      )}
 
       {focus && report ? (
         <>
@@ -327,7 +341,7 @@ export default function HomeScreen() {
       ) : (
         <section className="mt-8">
           <EmptyState
-            icon={<TargetIcon className="h-6 w-6" />}
+            art={<Owl expression="happy" size={92} />}
             title="Let’s get you ready"
             body="Add your first exam and StudyMate will work out what to study, how prepared you are, and what to do next."
             action={

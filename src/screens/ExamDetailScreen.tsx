@@ -20,7 +20,9 @@ import {
   SectionHeading,
 } from '../components/ui/primitives'
 import { gradeById, subjectById } from '../lib/curriculum'
+import { MascotNote } from '../components/Mascot'
 import { examInsight } from '../lib/engine/insights'
+import { examMoment } from '../lib/engine/mascot'
 import { readinessFor, type TopicReadiness } from '../lib/engine/readiness'
 import { cardScore, statFor } from '../lib/engine/mastery'
 import type { AppState } from '../lib/store/types'
@@ -83,6 +85,7 @@ export default function ExamDetailScreen({ examId }: { examId: string }) {
   const subject = subjectById(exam.subjectId)
   const grade = gradeById(exam.gradeId)
   const insight = examInsight(exam, report)
+  const moment = examMoment(report)
   const sorted = [...report.topics].sort((a, b) => a.mastery - b.mastery)
 
   return (
@@ -141,7 +144,9 @@ export default function ExamDetailScreen({ examId }: { examId: string }) {
         </div>
       </section>
 
-      <Card className="animate-rise mt-5 p-5" sheen>
+      {moment && <MascotNote moment={moment} className="animate-rise mt-5" />}
+
+      <Card className="animate-rise mt-4 p-5" sheen>
         <p className="text-[1.02rem] leading-snug font-bold tracking-tight text-fg">
           {insight.headline}
         </p>

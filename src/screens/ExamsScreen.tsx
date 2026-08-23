@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import ExamRow from '../components/ExamRow'
-import { BookIcon, PlusIcon } from '../components/icons'
+import { PlusIcon } from '../components/icons'
+import Owl from '../components/Owl'
 import { Button, Card, EmptyState, SectionHeading } from '../components/ui/primitives'
 import { pastExams, readinessFor, upcomingExams } from '../lib/engine/readiness'
 import { formatLongDate, plural } from '../lib/format'
@@ -38,7 +39,7 @@ export default function ExamsScreen() {
       {upcoming.length === 0 && past.length === 0 ? (
         <div className="mt-7">
           <EmptyState
-            icon={<BookIcon className="h-6 w-6" />}
+            art={<Owl expression="happy" size={92} />}
             title="No exams yet"
             body="Add one and StudyMate builds the topic breakdown, the readiness score and the daily plan around it."
             action={

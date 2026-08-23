@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { ArrowRightIcon, CheckIcon, XIcon } from '../icons'
+import { MascotHero } from '../Mascot'
+import Owl from '../Owl'
 import OverlayShell from '../ui/OverlayShell'
 import { Button, Card, Eyebrow, ProgressBar } from '../ui/primitives'
 import {
@@ -13,6 +15,7 @@ import {
 } from '../../lib/content/items'
 import type { Band } from '../../lib/curriculum'
 import { sessionFeedback } from '../../lib/engine/insights'
+import { quizMoment } from '../../lib/engine/mascot'
 import { effectiveMastery, statFor, type AnswerResult } from '../../lib/engine/mastery'
 import { readinessFor } from '../../lib/engine/readiness'
 import { clamp, plural } from '../../lib/format'
@@ -105,7 +108,9 @@ export default function QuizRunner({
   const [turn, setTurn] = useState(0)
   const [answers, setAnswers] = useState<{ topicKey: string; result: AnswerResult }[]>([])
   const [selected, setSelected] = useState<number | null>(null)
-  const [phase, setPhase] = useState<'question' | 'feedback' | 'summary'>('question')
+  const [phase, setPhase] = useState<'question' | 'feedback' | 'analysing' | 'summary'>(
+    'question',
+  )
   const [current, setCurrent] = useState(initial.first)
 
   const answered = answers.length
@@ -153,6 +158,14 @@ export default function QuizRunner({
       minutes,
       topics: grouped,
     })
+
+    if (kind === 'assessment') {
+      // The level check is the one moment where the app forms its whole
+      // picture of you — worth a beat before the numbers land.
+      setPhase('analysing')
+      window.setTimeout(() => setPhase('summary'), 1500)
+      return
+    }
     setPhase('summary')
   }
 
@@ -190,6 +203,22 @@ export default function QuizRunner({
     setSelected(null)
     setTurn(nextTurn)
     setPhase('question')
+  }
+
+  if (phase === 'analysing') {
+    return (
+      <OverlayShell title="Level check" onClose={onClose}>
+        <div className="flex flex-col items-center pt-14 text-center">
+          <Owl expression="thinking" size={132} />
+          <p className="animate-shimmer mt-5 text-[1.05rem] font-semibold tracking-tight text-fg">
+            Reading your answers…
+          </p>
+          <p className="mt-1.5 max-w-[17rem] text-sm leading-relaxed text-muted">
+            Placing every topic, then working out where your time is best spent.
+          </p>
+        </div>
+      </OverlayShell>
+    )
   }
 
   if (phase === 'summary') {
@@ -378,11 +407,20 @@ function Summary({
       }
     >
       <div className="animate-rise text-center">
-        <p className="tnum text-[3.4rem] leading-none font-extrabold tracking-[-0.04em] text-fg">
+        <MascotHero
+          moment={quizMoment({
+            correct,
+            total,
+            masteryDelta: rows.length === 1 ? rows[0].after - rows[0].before : readinessDelta,
+            isAssessment: kind === 'assessment',
+          })}
+          size={112}
+        />
+        <p className="tnum mt-5 text-[3.4rem] leading-none font-extrabold tracking-[-0.04em] text-fg">
           {correct}
           <span className="text-muted">/{total}</span>
         </p>
-        <p className="mt-2 text-sm text-muted">
+        <p className="mt-1 text-sm text-muted">
           {Math.round((correct / Math.max(1, total)) * 100)}% correct in this session
         </p>
       </div>

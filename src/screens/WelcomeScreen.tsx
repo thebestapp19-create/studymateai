@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ArrowRightIcon, SparkleIcon } from '../components/icons'
+import Owl from '../components/Owl'
 import { Button } from '../components/ui/primitives'
 import { useDispatch } from '../lib/store/context'
 
@@ -21,7 +22,8 @@ export default function WelcomeScreen() {
         className="relative z-10 flex w-full max-w-sm flex-col justify-center"
       >
         <div className="animate-rise">
-          <span className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1.5 text-[0.72rem] font-semibold tracking-[0.12em] text-brand uppercase">
+          <Owl expression="happy" size={96} className="-ml-2" />
+          <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1.5 text-[0.72rem] font-semibold tracking-[0.12em] text-brand uppercase">
             <SparkleIcon className="h-3.5 w-3.5" />
             StudyMate AI
           </span>

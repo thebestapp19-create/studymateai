@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ClockIcon } from '../icons'
+import Owl from '../Owl'
 import OverlayShell from '../ui/OverlayShell'
 import { Button, Card, Eyebrow, ProgressBar } from '../ui/primitives'
 import type { CardRating } from '../../lib/content/flashcards'
@@ -92,6 +93,9 @@ export default function SelfStudyRunner({
           </Button>
         }
       >
+        <div className="animate-rise mb-5 flex justify-center">
+          <Owl expression={delta > 0 ? 'proud' : 'encouraging'} size={104} />
+        </div>
         <Card className="animate-rise p-5" sheen>
           <p className="text-[1.05rem] leading-snug font-bold tracking-tight text-fg">
             {formatDuration(Math.max(1, Math.round(seconds / 60)))} on {topicName}

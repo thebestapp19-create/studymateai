@@ -199,20 +199,27 @@ export function StatTile({
 
 export function EmptyState({
   icon,
+  art,
   title,
   body,
   action,
 }: {
-  icon: ReactNode
+  icon?: ReactNode
+  /** Full-size artwork, shown instead of the boxed icon. */
+  art?: ReactNode
   title: string
   body: string
   action?: ReactNode
 }) {
   return (
     <Card className="px-6 py-8 text-center" sheen>
-      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/12 text-brand">
-        {icon}
-      </span>
+      {art ? (
+        <span className="flex justify-center">{art}</span>
+      ) : (
+        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/12 text-brand">
+          {icon}
+        </span>
+      )}
       <h3 className="mt-4 text-lg font-bold tracking-tight text-fg">{title}</h3>
       <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-muted">{body}</p>
       {action && <div className="mt-5">{action}</div>}

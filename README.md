@@ -60,6 +60,25 @@ The planner ranks every topic by exam urgency × knowledge gap × staleness, pic
 mode per topic (level check, flashcards, practice, review) and sizes each item to
 the learner's daily goal.
 
+## The owl
+
+`src/components/Owl.tsx` is the mascot: one SVG built from the app's own
+geometry — a shield silhouette with the chevron peaks the app uses for upward
+progress, a face shaped like one of its rounded cards with the blue hairline of
+a selected state, and a progress bar across the belly. Eight expressions
+(`happy`, `excited`, `proud`, `focused`, `thinking`, `encouraging`, `surprised`,
+`sleepy`) are composed from swappable eyes, brows, beak and head tilt rather
+than eight separate drawings, and a `mark` variant drops the fine detail below
+about 32px. `npm run dev` and open `/owl.html` for the full sheet.
+
+`src/lib/engine/mascot.ts` decides when the owl speaks and what it says. Every
+line is triggered by something the app actually knows — a streak milestone
+reached today, readiness up five points this week, two days away, an exam
+inside three days, the daily goal met — and lines rotate by day so the same
+trigger does not produce the same sentence twice. When nothing is worth saying
+it returns `null` and no owl appears, which is what keeps it from becoming
+furniture.
+
 ## Data
 
 Stored under `studymate.state.v1` in `localStorage`. Resetting from the profile

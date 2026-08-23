@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { MascotHero } from '../Mascot'
 import OverlayShell from '../ui/OverlayShell'
 import { Button, Card, Eyebrow, ProgressBar } from '../ui/primitives'
 import {
@@ -10,6 +11,7 @@ import {
   type Flashcard,
 } from '../../lib/content/flashcards'
 import type { Band } from '../../lib/curriculum'
+import { flashcardMoment } from '../../lib/engine/mascot'
 import { effectiveMastery, statFor } from '../../lib/engine/mastery'
 import { readinessFor } from '../../lib/engine/readiness'
 import { clamp } from '../../lib/format'
@@ -162,11 +164,19 @@ export default function FlashcardRunner({
         }
       >
         <div className="animate-rise text-center">
-          <p className="tnum text-[3.2rem] leading-none font-extrabold tracking-[-0.04em] text-fg">
+          <MascotHero
+            moment={flashcardMoment({
+              known: counts.known,
+              total: updates.length,
+              unknown: counts.unknown,
+            })}
+            size={112}
+          />
+          <p className="tnum mt-5 text-[3.2rem] leading-none font-extrabold tracking-[-0.04em] text-fg">
             {counts.known}
             <span className="text-muted">/{updates.length}</span>
           </p>
-          <p className="mt-2 text-sm text-muted">cards you had solid</p>
+          <p className="mt-1 text-sm text-muted">cards you had solid</p>
         </div>
 
         <Card className="animate-rise mt-6 p-5" sheen>

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { BoltIcon, ClockIcon, FlameIcon, ProgressIcon, TargetIcon } from '../components/icons'
+import { BoltIcon, ClockIcon, FlameIcon, TargetIcon } from '../components/icons'
+import Owl from '../components/Owl'
 import Sparkline from '../components/ui/Sparkline'
 import {
   Card,
@@ -73,7 +74,7 @@ export default function ProgressScreen() {
         </h1>
         <div className="mt-7">
           <EmptyState
-            icon={<ProgressIcon className="h-6 w-6" />}
+            art={<Owl expression="thinking" size={92} />}
             title="Nothing measured yet"
             body="Finish one session and this fills with your mastery per topic, your accuracy, and how readiness has moved over time."
           />

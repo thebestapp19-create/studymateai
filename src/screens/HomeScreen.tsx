@@ -15,7 +15,6 @@ import {
   Button,
   Card,
   EmptyState,
-  Eyebrow,
   ProgressBar,
   SectionHeading,
   StatTile,
@@ -26,7 +25,6 @@ import { examInsight, studyStreak } from '../lib/engine/insights'
 import { homeMoment } from '../lib/engine/mascot'
 import { buildDailyPlan, type PlanItem } from '../lib/engine/planner'
 import { readinessFor, upcomingExams } from '../lib/engine/readiness'
-import { statFor } from '../lib/engine/mastery'
 import { formatCountdown, formatDuration, firstName, plural } from '../lib/format'
 import { useNav } from '../lib/nav'
 import { getDailyQuote } from '../lib/quotes'
@@ -78,8 +76,6 @@ export default function HomeScreen() {
   const nextStep = plan[0] ?? null
   const restOfPlan = plan.slice(1)
 
-  const weakest = report?.needsWork[0] ?? report?.untouched[0] ?? null
-  const weakestStat = weakest ? statFor(state.stats, weakest.key) : null
 
   function start(item: PlanItem) {
     nav.startSession({
@@ -108,14 +104,15 @@ export default function HomeScreen() {
         )}
       </header>
 
-      <figure className="animate-rise mt-5 border-l-2 border-brand/60 pl-4" style={{ animationDelay: '50ms' }}>
-        <blockquote className="text-[0.95rem] leading-relaxed text-muted">
-          <span className="font-semibold text-fg">{name},</span> “{quote.text}”
-        </blockquote>
-        <figcaption className="mt-1 text-xs text-faint">— {quote.author}</figcaption>
-      </figure>
+      <MascotSay moment={moment} size={72} className="animate-rise mt-6" />
 
-      <MascotSay moment={moment} className="animate-rise mt-5" />
+      <figure
+        className="animate-rise mt-5 flex flex-wrap items-baseline gap-x-1.5 text-[0.78rem] leading-relaxed text-faint"
+        style={{ animationDelay: '60ms' }}
+      >
+        <blockquote>“{quote.text}”</blockquote>
+        <figcaption>— {quote.author}</figcaption>
+      </figure>
 
       {focus && report ? (
         <>
@@ -147,23 +144,26 @@ export default function HomeScreen() {
               />
             </div>
 
+            {insight && (
+              <p className="mt-4 max-w-[20rem] text-center text-sm leading-relaxed text-muted">
+                {insight.body}
+              </p>
+            )}
+
             {report.drivers.length > 0 && (
-              <ul className="mt-5 w-full space-y-2">
-                {report.drivers.slice(0, 3).map((driver) => (
-                  <li
-                    key={driver.label}
-                    className="flex items-start gap-2.5 rounded-2xl border border-line bg-card px-3.5 py-2.5"
-                  >
+              <Card className="mt-5 w-full divide-y divide-line">
+                {report.drivers.slice(0, 4).map((driver) => (
+                  <div key={driver.label} className="flex items-start gap-2.5 px-4 py-3">
                     <span
-                      className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${TONE_DOT[driver.tone]}`}
+                      className={`mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full ${TONE_DOT[driver.tone]}`}
                     />
-                    <span className="min-w-0 text-sm">
-                      <span className="font-semibold text-fg">{driver.label}: </span>
-                      <span className="text-muted">{driver.detail}</span>
-                    </span>
-                  </li>
+                    <p className="min-w-0 text-sm leading-relaxed">
+                      <span className="font-semibold text-fg">{driver.label}</span>
+                      <span className="text-muted"> · {driver.detail}</span>
+                    </p>
+                  </div>
                 ))}
-              </ul>
+              </Card>
             )}
           </section>
 
@@ -175,16 +175,6 @@ export default function HomeScreen() {
                 onStart={() => start(nextStep)}
               />
             </div>
-          )}
-
-          {insight && (
-            <section className="mt-4 rounded-[20px] border border-line bg-card p-4">
-              <Eyebrow tone="muted">Why</Eyebrow>
-              <p className="mt-2 text-[0.95rem] leading-relaxed font-medium text-fg">
-                {insight.headline}
-              </p>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted">{insight.body}</p>
-            </section>
           )}
 
           <section className="mt-7">
@@ -243,69 +233,6 @@ export default function HomeScreen() {
               }
             />
           </section>
-
-          {weakest && (
-            <section className="mt-4">
-              <SectionHeading title="Your weakest area" />
-              <Card className="p-5" sheen>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <h3 className="text-xl leading-tight font-bold tracking-tight text-fg">
-                      {weakest.name}
-                    </h3>
-                    <p className="mt-1 text-sm text-muted">
-                      {weakest.status === 'untouched'
-                        ? 'No data yet — one session will place it'
-                        : `Recent accuracy ${Math.round((weakestStat?.accuracy ?? 0) * 100)}% over ${weakest.attempts} ${plural(weakest.attempts, 'question')}`}
-                    </p>
-                  </div>
-                  <span className="tnum shrink-0 text-2xl font-bold tracking-tight text-warn">
-                    {weakest.mastery}%
-                  </span>
-                </div>
-
-                <ProgressBar
-                  className="mt-4"
-                  thick
-                  value={weakest.mastery}
-                  label={`${weakest.name} mastery`}
-                  tone={weakest.mastery < 45 ? 'risk' : 'warn'}
-                />
-
-                <div className="mt-4 flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() =>
-                      nav.startSession({
-                        mode: 'flashcards',
-                        examId: focus.id,
-                        subjectId: focus.subjectId,
-                        topicKey: weakest.key,
-                        topicName: weakest.name,
-                      })
-                    }
-                  >
-                    Flashcards
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() =>
-                      nav.startSession({
-                        mode: weakest.custom ? 'review' : 'practice',
-                        examId: focus.id,
-                        subjectId: focus.subjectId,
-                        topicKey: weakest.key,
-                        topicName: weakest.name,
-                      })
-                    }
-                  >
-                    Practise now
-                  </Button>
-                </div>
-              </Card>
-            </section>
-          )}
 
           {exams.length > 1 && (
             <section className="mt-7">

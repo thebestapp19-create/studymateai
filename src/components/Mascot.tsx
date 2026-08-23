@@ -8,18 +8,12 @@ const TONE_CARD: Record<MascotMoment['tone'], string> = {
   celebrate: 'border-brand/25 bg-brand/[0.07]',
 }
 
-const TONE_TAIL: Record<MascotMoment['tone'], string> = {
-  calm: 'border-line bg-card',
-  nudge: 'border-line-strong bg-raised',
-  celebrate: 'border-brand/25 bg-[#161e2c]',
-}
-
 /**
  * The owl, talking.
  *
- * A study partner that only ever appears in a caption is a logo; the speech
- * bubble is what makes it read as someone in the room. Tapping the owl moves
- * to the next thing it has to say.
+ * No bubble and no chrome — the character and the sentence are enough, and a
+ * cartoon tail would cheapen both. Tapping the owl moves to the next thing it
+ * has to say.
  */
 export function MascotSay({
   moment,
@@ -59,14 +53,13 @@ export function MascotSay({
         </span>
       </button>
 
-      <div
-        className={`relative mt-1.5 min-w-0 flex-1 rounded-[18px] border px-3.5 py-2.5 ${TONE_CARD[moment.tone]}`}
+      <p
+        className={`mt-2 min-w-0 flex-1 text-[0.98rem] leading-relaxed ${
+          moment.tone === 'celebrate' ? 'text-brand-tint' : 'text-fg'
+        }`}
       >
-        <span
-          className={`absolute top-4 -left-[7px] h-3 w-3 rotate-45 border-b border-l ${TONE_TAIL[moment.tone]}`}
-        />
-        <p className="relative text-[0.88rem] leading-relaxed text-muted">{line}</p>
-      </div>
+        {line}
+      </p>
     </div>
   )
 }

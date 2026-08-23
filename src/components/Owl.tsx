@@ -75,8 +75,8 @@ function Eye({ cx, face }: { cx: number; face: Face }) {
       <path
         d={`M${cx - 8.5} ${EYE_Y + (eye === 'archUp' ? 2.5 : -1.5)} q8.5 ${sweep} 17 0`}
         fill="none"
-        stroke="#0b0e14"
-        strokeWidth={3.2}
+        stroke="#151b28"
+        strokeWidth={3.4}
         strokeLinecap="round"
       />
     )
@@ -84,8 +84,8 @@ function Eye({ cx, face }: { cx: number; face: Face }) {
 
   return (
     <g>
-      <circle cx={cx} cy={EYE_Y} r={radius} fill="#f0f4fd" />
-      <circle cx={cx + look[0]} cy={EYE_Y + look[1]} r={pupil} fill="#0b0e14" />
+      <circle cx={cx} cy={EYE_Y} r={radius} fill="#ffffff" />
+      <circle cx={cx + look[0]} cy={EYE_Y + look[1]} r={pupil} fill="#151b28" />
       <circle
         cx={cx + look[0] - pupil * 0.36}
         cy={EYE_Y + look[1] - pupil * 0.42}
@@ -112,7 +112,7 @@ function Brow({ cx, lift, tilt }: { cx: number; lift: number; tilt: number }) {
     <path
       d={`M${cx - 7.6} ${y} q7.6 -3.2 15.2 0`}
       fill="none"
-      stroke="#7f93b4"
+      stroke="#6d7f9f"
       strokeWidth={2.4}
       strokeLinecap="round"
       transform={`rotate(${tilt} ${cx} ${y})`}
@@ -148,24 +148,34 @@ export default function Owl({
       aria-label={`StudyMate owl, ${expression}`}
     >
       <defs>
-        <linearGradient id="owl-body" x1="0.2" y1="0" x2="0.7" y2="1">
-          <stop offset="0%" stopColor="#2a3446" />
-          <stop offset="100%" stopColor="#141a24" />
+        <linearGradient id="owl-body" x1="0.25" y1="0" x2="0.75" y2="1">
+          <stop offset="0%" stopColor="#e2e9f7" />
+          <stop offset="100%" stopColor="#a8b8d6" />
         </linearGradient>
         <linearGradient id="owl-face" x1="0.2" y1="0" x2="0.8" y2="1">
-          <stop offset="0%" stopColor="#333f54" />
-          <stop offset="100%" stopColor="#1e2634" />
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#e6ecf9" />
+        </linearGradient>
+        <linearGradient id="owl-wing" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#b4c2dd" />
+          <stop offset="100%" stopColor="#8d9fc2" />
         </linearGradient>
         <linearGradient id="owl-beak" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f2b862" />
-          <stop offset="100%" stopColor="#d18723" />
+          <stop offset="0%" stopColor="#f7bd63" />
+          <stop offset="100%" stopColor="#e0921f" />
         </linearGradient>
+        <radialGradient id="owl-halo" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stopColor="#7aa2f0" stopOpacity="0.20" />
+          <stop offset="100%" stopColor="#7aa2f0" stopOpacity="0" />
+        </radialGradient>
       </defs>
+
+      <ellipse cx={60} cy={70} rx={52} ry={50} fill="url(#owl-halo)" />
 
       <g className={bounce ? 'owl-celebrate' : 'owl-float'}>
         {detailed && (
           // Feet first, so the body sits on top of them.
-          <g stroke="#d18723" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round" fill="none">
+          <g stroke="#e0921f" strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round" fill="none">
             <path d="M50 103 v4 M50 107 l-5 4 M50 107 v4.5 M50 107 l5 4" />
             <path d="M70 103 v4 M70 107 l-5 4 M70 107 v4.5 M70 107 l5 4" />
           </g>
@@ -173,99 +183,48 @@ export default function Owl({
 
         {face.pose === 'wave' && detailed && (
           <g className="owl-wave" style={{ transformOrigin: '30px 76px' }}>
-            <path
-              d="M30 68 q-14 2 -18 -10 q9 -6 20 -2 z"
-              fill="url(#owl-body)"
-              stroke="#ffffff"
-              strokeOpacity={0.12}
-              strokeWidth={1.3}
-              strokeLinejoin="round"
-            />
+            <path d="M30 68 q-14 2 -18 -10 q9 -6 20 -2 z" fill="url(#owl-wing)" />
           </g>
         )}
 
 
         {face.pose === 'cheer' && detailed && (
           <g className="owl-cheer">
-            <path
-              d="M28 66 q-13 -6 -14 -19 q10 -3 18 8 z"
-              fill="url(#owl-body)"
-              stroke="#ffffff"
-              strokeOpacity={0.12}
-              strokeWidth={1.3}
-              strokeLinejoin="round"
-            />
-            <path
-              d="M92 66 q13 -6 14 -19 q-10 -3 -18 8 z"
-              fill="url(#owl-body)"
-              stroke="#ffffff"
-              strokeOpacity={0.12}
-              strokeWidth={1.3}
-              strokeLinejoin="round"
-            />
+            <path d="M28 66 q-13 -6 -14 -19 q10 -3 18 8 z" fill="url(#owl-wing)" />
+            <path d="M92 66 q13 -6 14 -19 q-10 -3 -18 8 z" fill="url(#owl-wing)" />
           </g>
         )}
 
         <g style={{ transformOrigin: '60px 80px' }} transform={`rotate(${face.tilt} 60 80)`}>
-          <path
-            d={BODY}
-            fill="url(#owl-body)"
-            stroke="#ffffff"
-            strokeOpacity={0.13}
-            strokeWidth={1.5}
-            strokeLinejoin="round"
-          />
+          <path d={BODY} fill="url(#owl-body)" />
 
           {detailed && (
             <>
-              {/* Folded wings, indicated inside the silhouette. */}
-              <path
-                d="M27 58 q-3 18 4 33"
-                fill="none"
-                stroke="#ffffff"
-                strokeOpacity={0.09}
-                strokeWidth={1.6}
-                strokeLinecap="round"
-              />
-              <path
-                d="M93 58 q3 18 -4 33"
-                fill="none"
-                stroke="#ffffff"
-                strokeOpacity={0.09}
-                strokeWidth={1.6}
-                strokeLinecap="round"
-              />
-
-              {/* Belly: a progress bar, filled the way the app fills its bars. */}
-              <rect x={46} y={92} width={28} height={4} rx={2} fill="#ffffff" fillOpacity={0.09} />
-              <rect x={46} y={92} width={17} height={4} rx={2} fill="#3b82f6" fillOpacity={0.85} />
+              {/* Folded wings, tucked along the body rather than sticking out. */}
+              <path d="M30 54 C20 65 19 85 30 99 C34 84 34 68 30 54 Z" fill="url(#owl-wing)" />
+              <path d="M90 54 C100 65 101 85 90 99 C86 84 86 68 90 54 Z" fill="url(#owl-wing)" />
             </>
           )}
 
           {/* The face is one of the app's cards. */}
-          <rect x={25} y={34} width={70} height={44} rx={21} fill="url(#owl-face)" />
+          <rect x={26} y={33} width={68} height={46} rx={22} fill="url(#owl-face)" />
           <rect
-            x={25}
-            y={34}
-            width={70}
-            height={44}
-            rx={21}
+            x={26}
+            y={33}
+            width={68}
+            height={46}
+            rx={22}
             fill="none"
-            stroke="#3b82f6"
-            strokeOpacity={0.55}
-            strokeWidth={1.7}
+            stroke="#2f6fd8"
+            strokeOpacity={0.42}
+            strokeWidth={1.6}
           />
 
           {face.cheeks && detailed && (
-            <rect
-              x={27}
-              y={36}
-              width={66}
-              height={40}
-              rx={19}
-              fill="#3b82f6"
-              fillOpacity={0.07}
-            />
+            <>
+              <ellipse cx={34} cy={70} rx={5.5} ry={3.4} fill="#f0a03c" fillOpacity={0.3} />
+              <ellipse cx={86} cy={70} rx={5.5} ry={3.4} fill="#f0a03c" fillOpacity={0.3} />
+            </>
           )}
 
           <Eye cx={EYE_X.left} face={face} />
@@ -299,7 +258,7 @@ export default function Owl({
         </g>
 
         {face.extras === 'sparkles' && detailed && (
-          <g fill="#93b8fb">
+          <g fill="#7aa2f0">
             <path className="owl-spark owl-spark-1" d="M101 28 l1.9 4.8 4.8 1.9 -4.8 1.9 -1.9 4.8 -1.9 -4.8 -4.8 -1.9 4.8 -1.9 z" />
             <path className="owl-spark owl-spark-2" d="M15 42 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4 z" />
             <path className="owl-spark owl-spark-3" d="M104 52 l1.1 2.8 2.8 1.1 -2.8 1.1 -1.1 2.8 -1.1 -2.8 -2.8 -1.1 2.8 -1.1 z" />
@@ -315,7 +274,7 @@ export default function Owl({
         )}
 
         {face.extras === 'dots' && detailed && (
-          <g fill="#93b8fb">
+          <g fill="#7aa2f0">
             <circle className="owl-dot owl-dot-1" cx={99} cy={40} r={2.4} />
             <circle className="owl-dot owl-dot-2" cx={106} cy={31} r={3.2} />
             <circle className="owl-dot owl-dot-3" cx={114} cy={21} r={4} />
@@ -323,7 +282,7 @@ export default function Owl({
         )}
 
         {face.extras === 'zzz' && detailed && (
-          <g fill="none" stroke="#93b8fb" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+          <g fill="none" stroke="#7aa2f0" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
             <path className="owl-zzz owl-zzz-1" d="M96 40 h7 l-7 8 h7" />
             <path className="owl-zzz owl-zzz-2" d="M106 26 h9 l-9 10 h9" />
           </g>

@@ -36,6 +36,19 @@
 
   --radius-card: 1.25rem;
 
+  /* Mascot palette — flat, saturated, one place to retune. */
+  --owl-body: #c07a2c;
+  --owl-belly: #e0a558;
+  --owl-wing: #a5651f;
+  --owl-disc: #fcf1dc;
+  --owl-disc-lit: #ffffff;
+  --owl-eye: #22190f;
+  --owl-beak: #f0a93e;
+  --owl-foot: #e0921f;
+  --owl-brow: #8a6329;
+  --owl-blush: #f2b263;
+  --owl-halo: #f0a93e;
+
   --animate-rise: rise 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-fade: fade 0.3s ease both;
   --animate-pop: pop 0.34s cubic-bezier(0.34, 1.56, 0.64, 1) both;

@@ -62,14 +62,21 @@ the learner's daily goal.
 
 ## The owl
 
-`src/components/Owl.tsx` is the mascot: one SVG built from the app's own
-geometry — a shield silhouette with the chevron peaks the app uses for upward
-progress, a face shaped like one of its rounded cards with the blue hairline of
-a selected state, and a progress bar across the belly. Eight expressions
+`src/components/Owl.tsx` is the mascot: one SVG, flat saturated fills, no
+gradients. A head-dominant silhouette with feather tufts built into the outline,
+a barn-owl heart face — the one shape that says "owl" with no other help — and
+big dark eyes as the highest-contrast element in the mark. Eight expressions
 (`happy`, `excited`, `proud`, `focused`, `thinking`, `encouraging`, `surprised`,
-`sleepy`) are composed from swappable eyes, brows, beak and head tilt rather
-than eight separate drawings, and a `mark` variant drops the fine detail below
-about 32px. `npm run dev` and open `/owl.html` for the full sheet.
+`sleepy`) are composed from swappable eyes, brows, beak, head tilt and pose
+rather than eight separate drawings, and a `mark` variant drops the fine detail
+below about 32px.
+
+Its palette lives in CSS custom properties (`--owl-body`, `--owl-disc`,
+`--owl-beak`, …) in `index.css`, so retuning the character is a token change
+rather than an edit to the artwork. Bronze is the shipped palette — warm
+against the cool dark UI, and clear of both the blue used for actions and the
+green every other study app reaches for. `npm run dev` and open `/owl.html` for
+the sheet, which also renders the indigo and teal alternatives.
 
 `src/lib/engine/mascot.ts` is the owl's voice. It is called Otto, it speaks in
 the first person, and it behaves like a study partner rather than a logo: it

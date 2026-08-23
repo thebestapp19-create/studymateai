@@ -1,35 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
-  <defs>
-    <linearGradient id="body" x1="0.25" y1="0" x2="0.75" y2="1">
-      <stop offset="0%" stop-color="#e2e9f7"/>
-      <stop offset="100%" stop-color="#a8b8d6"/>
-    </linearGradient>
-    <linearGradient id="face" x1="0.2" y1="0" x2="0.8" y2="1">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#e6ecf9"/>
-    </linearGradient>
-    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#b4c2dd"/>
-      <stop offset="100%" stop-color="#8d9fc2"/>
-    </linearGradient>
-    <linearGradient id="beak" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f7bd63"/>
-      <stop offset="100%" stop-color="#e0921f"/>
-    </linearGradient>
-  </defs>
   <rect width="120" height="120" rx="27" fill="#0b0e14"/>
-  <g transform="translate(60 63) scale(0.88) translate(-60 -63)">
-    <path d="M25 47 Q26 33 31 26 Q36 17 42 29 C48 34 53 32 60 32 C67 32 72 34 78 29 Q84 17 89 26 Q94 33 95 47 C101 59 101 78 96 90 C91 102 78 109 60 109 C42 109 29 102 24 90 C19 78 19 59 25 47 Z" fill="url(#body)"/>
-    <path d="M30 54 C20 65 19 85 30 99 C34 84 34 68 30 54 Z" fill="url(#wing)"/>
-    <path d="M90 54 C100 65 101 85 90 99 C86 84 86 68 90 54 Z" fill="url(#wing)"/>
-    <rect x="26" y="33" width="68" height="46" rx="22" fill="url(#face)"/>
-    <rect x="26" y="33" width="68" height="46" rx="22" fill="none" stroke="#2f6fd8" stroke-opacity="0.42" stroke-width="1.6"/>
-    <circle cx="45" cy="56" r="9.8" fill="#ffffff"/>
-    <circle cx="45" cy="56" r="5.6" fill="#151b28"/>
-    <circle cx="43" cy="53.6" r="1.8" fill="#ffffff"/>
-    <circle cx="75" cy="56" r="9.8" fill="#ffffff"/>
-    <circle cx="75" cy="56" r="5.6" fill="#151b28"/>
-    <circle cx="73" cy="53.6" r="1.8" fill="#ffffff"/>
-    <path d="M60 67.5 l5.5 6.5 q-5.5 5 -11 0 z" fill="url(#beak)"/>
+  <g transform="translate(60 61) scale(0.9) translate(-60 -61)">
+    <path d="M27 36 Q28 18 37 26 C44 19 52 15 60 15 C68 15 76 19 83 26 Q92 18 93 36 C100 48 101 68 96 84 C90 101 77 110 60 110 C43 110 30 101 24 84 C19 68 20 48 27 36 Z" fill="#c07a2c"/>
+    <path d="M30 58 C21 70 21 90 32 103 C35 88 34 72 30 58 Z" fill="#a5651f"/>
+    <path d="M90 58 C99 70 99 90 88 103 C85 88 86 72 90 58 Z" fill="#a5651f"/>
+    <path d="M60 78 C74 78 84 88 84 98 C77 106 69 110 60 110 C51 110 43 106 36 98 C36 88 46 78 60 78 Z" fill="#e0a558"/>
+    <path d="M60 31 C53 22 39 22 33 33 C27 44 30 60 41 70 C48 77 55 83 60 90 C65 83 72 77 79 70 C90 60 93 44 87 33 C81 22 67 22 60 31 Z" fill="#fcf1dc"/>
+    <circle cx="47" cy="50" r="9.8" fill="#ffffff"/>
+    <circle cx="47" cy="50" r="5.6" fill="#22190f"/>
+    <circle cx="45" cy="47.6" r="1.8" fill="#ffffff"/>
+    <circle cx="73" cy="50" r="9.8" fill="#ffffff"/>
+    <circle cx="73" cy="50" r="5.6" fill="#22190f"/>
+    <circle cx="71" cy="47.6" r="1.8" fill="#ffffff"/>
+    <path d="M60 61 l6 7.5 q-6 5.5 -12 0 z" fill="#f0a93e"/>
   </g>
 </svg>

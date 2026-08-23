@@ -39,6 +39,58 @@ createRoot(document.getElementById('root')!).render(
       ))}
     </div>
 
+    <div className="mx-auto mt-6 grid max-w-5xl grid-cols-3 gap-4">
+      {[
+        {
+          name: 'Bronze',
+          vars: {},
+        },
+        {
+          name: 'Indigo',
+          vars: {
+            '--owl-body': '#5b56cc',
+            '--owl-belly': '#7e79e6',
+            '--owl-wing': '#4a45ab',
+            '--owl-disc': '#f0eefc',
+            '--owl-eye': '#1a1730',
+            '--owl-beak': '#f5a73c',
+            '--owl-foot': '#e0921f',
+            '--owl-brow': '#8f8ad6',
+            '--owl-blush': '#f5a73c',
+            '--owl-halo': '#7e79e6',
+          },
+        },
+        {
+          name: 'Teal',
+          vars: {
+            '--owl-body': '#1f8f86',
+            '--owl-belly': '#3fb3a6',
+            '--owl-wing': '#16706a',
+            '--owl-disc': '#eafaf5',
+            '--owl-eye': '#0e2622',
+            '--owl-beak': '#f5a73c',
+            '--owl-foot': '#e0921f',
+            '--owl-brow': '#4c9c93',
+            '--owl-blush': '#f5a73c',
+            '--owl-halo': '#3fb3a6',
+          },
+        },
+      ].map((option) => (
+        <div
+          key={option.name}
+          className="rounded-[20px] border border-line bg-card p-5 text-center"
+          style={option.vars as React.CSSProperties}
+        >
+          <div className="flex items-end justify-center gap-4">
+            <Owl expression="happy" size={128} />
+            <Owl expression="excited" size={92} />
+            <Owl expression="happy" size={40} />
+          </div>
+          <p className="mt-3 text-sm font-semibold text-fg">{option.name}</p>
+        </div>
+      ))}
+    </div>
+
     <div className="mx-auto mt-6 max-w-5xl rounded-[20px] border border-line bg-card p-6">
       <p className="text-xs font-semibold tracking-[0.14em] text-faint uppercase">
         Sizes · mark variant below 32px

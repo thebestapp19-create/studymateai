@@ -55,14 +55,19 @@ const FACES: Record<OwlExpression, Face> = {
   sleepy: { eye: 'archDown', look: [0, 0], brow: [-1.4, -4], tilt: 8, beak: 'closed', pose: 'rest', extras: 'zzz', cheeks: false },
 }
 
-const EYE_Y = 56
-const EYE_X = { left: 45, right: 75 }
+const EYE_Y = 50
+const EYE_X = { left: 47, right: 73 }
 
-/** Shield with two swept feather peaks — the whole mark lives in this outline. */
+/** Head-dominant silhouette with soft feather tufts built into the outline. */
 const BODY =
-  'M25 47 Q26 33 31 26 Q36 17 42 29 C48 34 53 32 60 32 C67 32 72 34 78 29 ' +
-  'Q84 17 89 26 Q94 33 95 47 C101 59 101 78 96 90 C91 102 78 109 60 109 ' +
-  'C42 109 29 102 24 90 C19 78 19 59 25 47 Z'
+  'M27 36 Q28 18 37 26 C44 19 52 15 60 15 C68 15 76 19 83 26 Q92 18 93 36 ' +
+  'C100 48 101 68 96 84 C90 101 77 110 60 110 C43 110 30 101 24 84 ' +
+  'C19 68 20 48 27 36 Z'
+
+/** Barn-owl heart face — the one shape that says "owl" with no other help. */
+const DISC =
+  'M60 31 C53 22 39 22 33 33 C27 44 30 60 41 70 C48 77 55 83 60 90 ' +
+  'C65 83 72 77 79 70 C90 60 93 44 87 33 C81 22 67 22 60 31 Z'
 
 function Eye({ cx, face }: { cx: number; face: Face }) {
   const { eye, look } = face
@@ -75,7 +80,7 @@ function Eye({ cx, face }: { cx: number; face: Face }) {
       <path
         d={`M${cx - 8.5} ${EYE_Y + (eye === 'archUp' ? 2.5 : -1.5)} q8.5 ${sweep} 17 0`}
         fill="none"
-        stroke="#151b28"
+        stroke="var(--owl-eye)"
         strokeWidth={3.4}
         strokeLinecap="round"
       />
@@ -84,8 +89,8 @@ function Eye({ cx, face }: { cx: number; face: Face }) {
 
   return (
     <g>
-      <circle cx={cx} cy={EYE_Y} r={radius} fill="#ffffff" />
-      <circle cx={cx + look[0]} cy={EYE_Y + look[1]} r={pupil} fill="#151b28" />
+      <circle cx={cx} cy={EYE_Y} r={radius} fill="var(--owl-disc-lit)" />
+      <circle cx={cx + look[0]} cy={EYE_Y + look[1]} r={pupil} fill="var(--owl-eye)" />
       <circle
         cx={cx + look[0] - pupil * 0.36}
         cy={EYE_Y + look[1] - pupil * 0.42}
@@ -95,12 +100,12 @@ function Eye({ cx, face }: { cx: number; face: Face }) {
       {eye === 'half' && (
         <path
           d={`M${cx - radius} ${EYE_Y - radius} h${radius * 2} v${radius * 0.52} a${radius} ${radius} 0 0 1 ${-radius * 2} 0 z`}
-          fill="url(#owl-face)"
+          fill="var(--owl-disc)"
         />
       )}
       {/* Lid, parked open — the blink animation sweeps it down. */}
       <g className="owl-blink" style={{ transformOrigin: `${cx}px ${EYE_Y - radius}px` }}>
-        <circle cx={cx} cy={EYE_Y} r={radius + 0.5} fill="url(#owl-face)" />
+        <circle cx={cx} cy={EYE_Y} r={radius + 0.5} fill="var(--owl-disc)" />
       </g>
     </g>
   )
@@ -112,7 +117,7 @@ function Brow({ cx, lift, tilt }: { cx: number; lift: number; tilt: number }) {
     <path
       d={`M${cx - 7.6} ${y} q7.6 -3.2 15.2 0`}
       fill="none"
-      stroke="#6d7f9f"
+      stroke="var(--owl-brow)"
       strokeWidth={2.4}
       strokeLinecap="round"
       transform={`rotate(${tilt} ${cx} ${y})`}
@@ -148,82 +153,61 @@ export default function Owl({
       aria-label={`StudyMate owl, ${expression}`}
     >
       <defs>
-        <linearGradient id="owl-body" x1="0.25" y1="0" x2="0.75" y2="1">
-          <stop offset="0%" stopColor="#e2e9f7" />
-          <stop offset="100%" stopColor="#a8b8d6" />
-        </linearGradient>
-        <linearGradient id="owl-face" x1="0.2" y1="0" x2="0.8" y2="1">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="100%" stopColor="#e6ecf9" />
-        </linearGradient>
-        <linearGradient id="owl-wing" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#b4c2dd" />
-          <stop offset="100%" stopColor="#8d9fc2" />
-        </linearGradient>
-        <linearGradient id="owl-beak" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f7bd63" />
-          <stop offset="100%" stopColor="#e0921f" />
-        </linearGradient>
         <radialGradient id="owl-halo" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0%" stopColor="#7aa2f0" stopOpacity="0.20" />
-          <stop offset="100%" stopColor="#7aa2f0" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--owl-halo)" stopOpacity="0.28" />
+          <stop offset="100%" stopColor="var(--owl-halo)" stopOpacity="0" />
         </radialGradient>
       </defs>
 
-      <ellipse cx={60} cy={70} rx={52} ry={50} fill="url(#owl-halo)" />
+      <ellipse cx={60} cy={62} rx={56} ry={54} fill="url(#owl-halo)" />
 
       <g className={bounce ? 'owl-celebrate' : 'owl-float'}>
         {detailed && (
           // Feet first, so the body sits on top of them.
-          <g stroke="#e0921f" strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M50 103 v4 M50 107 l-5 4 M50 107 v4.5 M50 107 l5 4" />
-            <path d="M70 103 v4 M70 107 l-5 4 M70 107 v4.5 M70 107 l5 4" />
+          <g stroke="var(--owl-foot)" strokeWidth={3.6} strokeLinecap="round" strokeLinejoin="round" fill="none">
+            <path d="M51 106 v3 M51 109 l-5 4 M51 109 v4.5 M51 109 l5 4" />
+            <path d="M69 106 v3 M69 109 l-5 4 M69 109 v4.5 M69 109 l5 4" />
           </g>
         )}
 
         {face.pose === 'wave' && detailed && (
           <g className="owl-wave" style={{ transformOrigin: '30px 76px' }}>
-            <path d="M30 68 q-14 2 -18 -10 q9 -6 20 -2 z" fill="url(#owl-wing)" />
+            <path d="M30 68 q-14 2 -18 -10 q9 -6 20 -2 z" fill="var(--owl-wing)" />
           </g>
         )}
 
 
         {face.pose === 'cheer' && detailed && (
           <g className="owl-cheer">
-            <path d="M28 66 q-13 -6 -14 -19 q10 -3 18 8 z" fill="url(#owl-wing)" />
-            <path d="M92 66 q13 -6 14 -19 q-10 -3 -18 8 z" fill="url(#owl-wing)" />
+            <path d="M28 66 q-13 -6 -14 -19 q10 -3 18 8 z" fill="var(--owl-wing)" />
+            <path d="M92 66 q13 -6 14 -19 q-10 -3 -18 8 z" fill="var(--owl-wing)" />
           </g>
         )}
 
         <g style={{ transformOrigin: '60px 80px' }} transform={`rotate(${face.tilt} 60 80)`}>
-          <path d={BODY} fill="url(#owl-body)" />
+          <path d={BODY} fill="var(--owl-body)" />
+          {detailed && (
+            <path
+              d="M60 78 C74 78 84 88 84 98 C77 106 69 110 60 110 C51 110 43 106 36 98 C36 88 46 78 60 78 Z"
+              fill="var(--owl-belly)"
+            />
+          )}
 
           {detailed && (
             <>
               {/* Folded wings, tucked along the body rather than sticking out. */}
-              <path d="M30 54 C20 65 19 85 30 99 C34 84 34 68 30 54 Z" fill="url(#owl-wing)" />
-              <path d="M90 54 C100 65 101 85 90 99 C86 84 86 68 90 54 Z" fill="url(#owl-wing)" />
+              <path d="M30 58 C21 70 21 90 32 103 C35 88 34 72 30 58 Z" fill="var(--owl-wing)" />
+              <path d="M90 58 C99 70 99 90 88 103 C85 88 86 72 90 58 Z" fill="var(--owl-wing)" />
             </>
           )}
 
           {/* The face is one of the app's cards. */}
-          <rect x={26} y={33} width={68} height={46} rx={22} fill="url(#owl-face)" />
-          <rect
-            x={26}
-            y={33}
-            width={68}
-            height={46}
-            rx={22}
-            fill="none"
-            stroke="#2f6fd8"
-            strokeOpacity={0.42}
-            strokeWidth={1.6}
-          />
+          <path d={DISC} fill="var(--owl-disc)" />
 
           {face.cheeks && detailed && (
             <>
-              <ellipse cx={34} cy={70} rx={5.5} ry={3.4} fill="#f0a03c" fillOpacity={0.3} />
-              <ellipse cx={86} cy={70} rx={5.5} ry={3.4} fill="#f0a03c" fillOpacity={0.3} />
+              <ellipse cx={37} cy={64} rx={5.5} ry={3.4} fill="var(--owl-blush)" fillOpacity={0.55} />
+              <ellipse cx={83} cy={64} rx={5.5} ry={3.4} fill="var(--owl-blush)" fillOpacity={0.55} />
             </>
           )}
 
@@ -244,14 +228,14 @@ export default function Owl({
           {/* Beak — the one warm note in the palette. */}
           {face.beak === 'open' ? (
             <path
-              d="M54.5 67 h11 q0 9 -5.5 9 q-5.5 0 -5.5 -9 z"
-              fill="url(#owl-beak)"
+              d="M54.5 62 h11 q0 10 -5.5 10 q-5.5 0 -5.5 -10 z"
+              fill="var(--owl-beak)"
               strokeLinejoin="round"
             />
           ) : (
             <path
-              d="M60 67.5 l5.5 6.5 q-5.5 5 -11 0 z"
-              fill="url(#owl-beak)"
+              d="M60 61 l6 7.5 q-6 5.5 -12 0 z"
+              fill="var(--owl-beak)"
               strokeLinejoin="round"
             />
           )}

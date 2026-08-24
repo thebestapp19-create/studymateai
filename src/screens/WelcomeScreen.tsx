@@ -1,100 +1,80 @@
 import { useState } from 'react'
-import { ArrowRightIcon, CheckIcon } from '../components/icons'
-import { GRADES, saveUserProfile, type UserProfile } from '../lib/userProfile'
+import { ArrowRightIcon, SparkleIcon } from '../components/icons'
+import Owl from '../components/Owl'
+import { OWL_NAME } from '../lib/engine/mascot'
+import { Button } from '../components/ui/primitives'
+import { useDispatch } from '../lib/store/context'
 
-type WelcomeScreenProps = {
-  onComplete: (profile: UserProfile) => void
-}
-
-export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
+export default function WelcomeScreen() {
+  const dispatch = useDispatch()
   const [name, setName] = useState('')
-  const [grade, setGrade] = useState('')
+  const trimmed = name.trim()
 
-  const trimmedName = name.trim()
-  const canContinue = trimmedName.length > 0 && grade.length > 0
-
-  function handleSubmit(event: React.FormEvent) {
+  function submit(event: React.FormEvent) {
     event.preventDefault()
-    if (!canContinue) return
-
-    const profile = { name: trimmedName, grade }
-    saveUserProfile(profile)
-    onComplete(profile)
+    if (trimmed.length === 0) return
+    dispatch({ type: 'setName', name: trimmed })
   }
 
   return (
-    <div className="flex min-h-dvh justify-center bg-ink px-6 py-12">
+    <div className="app-glow relative flex min-h-dvh justify-center px-6 py-12">
       <form
-        onSubmit={handleSubmit}
-        className="flex w-full max-w-sm flex-col justify-center"
+        onSubmit={submit}
+        className="relative z-10 flex w-full max-w-sm flex-col justify-center"
       >
-        <header>
-          <p className="text-sm font-semibold tracking-wide text-brand">
+        <div className="animate-rise">
+          <Owl expression="happy" size={96} className="-ml-2" />
+          <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1.5 text-[0.72rem] font-semibold tracking-[0.12em] text-brand uppercase">
+            <SparkleIcon className="h-3.5 w-3.5" />
             StudyMate AI
-          </p>
-          <h1 className="mt-3 text-[2.6rem] leading-[1.08] font-extrabold tracking-tight text-fg">
-            Welcome! Let's get you set up.
-          </h1>
-          <p className="mt-4 text-lg leading-snug text-muted">
-            Tell us a little about yourself so we can personalize your study
-            experience.
-          </p>
-        </header>
+          </span>
+        </div>
 
-        <div className="mt-10">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-muted"
-          >
-            What should we call you?
+        <h1
+          className="animate-rise mt-7 text-[2.7rem] leading-[1.05] font-extrabold tracking-[-0.035em] text-fg"
+          style={{ animationDelay: '60ms' }}
+        >
+          What should we call you?
+        </h1>
+
+        <p
+          className="animate-rise mt-4 text-[1.05rem] leading-relaxed text-muted"
+          style={{ animationDelay: '120ms' }}
+        >
+          I’m {OWL_NAME}. I’ll work out what you’re weak at and tell you what to
+          study — but I need something to call you first.
+        </p>
+
+        <p
+          className="animate-rise mt-2.5 text-sm leading-relaxed text-faint"
+          style={{ animationDelay: '150ms' }}
+        >
+          No account, no questionnaire. That’s the whole setup.
+        </p>
+
+        <div className="animate-rise mt-9" style={{ animationDelay: '180ms' }}>
+          <label htmlFor="name" className="sr-only">
+            Your name
           </label>
           <input
             id="name"
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="Enter your first name"
+            placeholder="Your first name"
             autoComplete="given-name"
             autoFocus
-            className="mt-2 w-full rounded-2xl border border-line bg-card px-5 py-4 text-lg text-fg placeholder:text-faint outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand/40"
+            maxLength={24}
+            className="w-full rounded-2xl border border-line bg-card px-5 py-4 text-lg text-fg transition-colors outline-none placeholder:text-faint focus:border-brand/70 focus:bg-raised"
           />
         </div>
 
-        <fieldset className="mt-8 border-0 p-0">
-          <legend className="text-sm font-medium text-muted">
-            What grade are you in?
-          </legend>
-          <div className="mt-3 flex flex-wrap gap-2.5">
-            {GRADES.map((option) => {
-              const selected = option === grade
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setGrade(option)}
-                  className={`flex items-center gap-1.5 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors ${
-                    selected
-                      ? 'border-brand bg-brand/15 text-brand'
-                      : 'border-line bg-card text-fg hover:border-line-strong'
-                  }`}
-                >
-                  {selected && <CheckIcon className="h-3.5 w-3.5" />}
-                  {option}
-                </button>
-              )
-            })}
-          </div>
-        </fieldset>
-
-        <button
-          type="submit"
-          disabled={!canContinue}
-          className="mt-12 flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-strong disabled:cursor-not-allowed disabled:bg-card disabled:text-faint"
-        >
-          Continue
-          <ArrowRightIcon className="h-5 w-5" />
-        </button>
+        <div className="animate-rise mt-6" style={{ animationDelay: '240ms' }}>
+          <Button type="submit" size="lg" full disabled={trimmed.length === 0}>
+            Start
+            <ArrowRightIcon className="h-5 w-5" />
+          </Button>
+        </div>
       </form>
     </div>
   )

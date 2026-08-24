@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArrowRightIcon, CheckIcon, XIcon } from '../icons'
-import { MascotHero, MascotReaction } from '../Mascot'
+import { MascotHero } from '../Mascot'
 import Owl from '../Owl'
 import OverlayShell from '../ui/OverlayShell'
 import { Button, Card, Eyebrow, ProgressBar } from '../ui/primitives'
@@ -115,6 +115,8 @@ export default function QuizRunner({
 
   const answered = answers.length
   const correctCount = answers.filter((entry) => entry.result.correct).length
+
+  const correctAnswer = selected !== null && current !== null && selected === current.item.answerIndex
 
   // How many in a row are right, for the owl to notice.
   let runStreak = 0
@@ -263,6 +265,11 @@ export default function QuizRunner({
 
   const item = current.item
   const topicName = topics.find((topic) => topic.key === current.topicKey)?.name ?? ''
+  const reaction = answerReaction({
+    correct: correctAnswer,
+    difficulty: item.difficulty,
+    streak: runStreak,
+  })
 
   return (
     <OverlayShell
@@ -270,12 +277,47 @@ export default function QuizRunner({
       subtitle={`Question ${answered + (phase === 'feedback' ? 0 : 1)} of ${total}`}
       onClose={onClose}
       progress={(answered / total) * 100}
+      footerClass={
+        phase === 'feedback'
+          ? `animate-sheet border-t pb-[max(0.9rem,env(safe-area-inset-bottom))] ${
+              correctAnswer ? 'border-good/30 bg-good/[0.10]' : 'border-risk/30 bg-risk/[0.10]'
+            }`
+          : undefined
+      }
       footer={
         phase === 'feedback' ? (
-          <Button full size="lg" onClick={next}>
-            {answers.length >= total ? 'See results' : 'Next question'}
-            <ArrowRightIcon className="h-4.5 w-4.5" />
-          </Button>
+          <div className="pb-1">
+            <div className="flex items-start gap-3">
+              <Owl
+                expression={correctAnswer ? (runStreak >= 3 ? 'excited' : 'happy') : 'encouraging'}
+                size={54}
+                bounce={correctAnswer}
+                className="-mt-1 shrink-0"
+              />
+              <div className="min-w-0 flex-1">
+                <p
+                  className={`text-[1.05rem] font-extrabold tracking-tight ${
+                    correctAnswer ? 'text-good' : 'text-risk'
+                  }`}
+                >
+                  {reaction.line}
+                </p>
+                <p className="mt-1 text-[0.82rem] leading-relaxed text-muted">
+                  {item.explanation}
+                </p>
+              </div>
+            </div>
+            <Button
+              full
+              size="lg"
+              className="mt-3"
+              variant={correctAnswer ? 'primary' : 'secondary'}
+              onClick={next}
+            >
+              {answers.length >= total ? 'See results' : 'Continue'}
+              <ArrowRightIcon className="h-4.5 w-4.5" />
+            </Button>
+          </div>
         ) : undefined
       }
     >
@@ -337,22 +379,6 @@ export default function QuizRunner({
           })}
         </ul>
 
-        {phase === 'feedback' && (
-          <Card className="animate-rise mt-4 p-4">
-            <MascotReaction
-              moment={answerReaction({
-                correct: selected === item.answerIndex,
-                difficulty: item.difficulty,
-                streak: runStreak,
-              })}
-              label={selected === item.answerIndex ? 'Correct' : 'Not quite'}
-              labelClass={selected === item.answerIndex ? 'text-good' : 'text-warn'}
-            >
-              <p className="mt-1.5 text-sm leading-relaxed text-muted">{item.explanation}</p>
-              <p className="mt-2.5 text-xs text-faint">Skill: {item.skill}</p>
-            </MascotReaction>
-          </Card>
-        )}
       </div>
     </OverlayShell>
   )

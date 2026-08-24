@@ -92,13 +92,19 @@ export function MascotHero({
   size?: number
   className?: string
 }) {
+  const celebrate = moment.tone === 'celebrate'
+
   return (
     <div className={`flex flex-col items-center text-center ${className}`}>
-      <Owl
-        expression={moment.expression}
-        size={size}
-        bounce={moment.tone === 'celebrate'}
-      />
+      <span className="relative flex items-center justify-center">
+        {celebrate && (
+          <span
+            aria-hidden
+            className="owl-burst absolute inset-0 -m-6 rounded-full border-2 border-brand/40"
+          />
+        )}
+        <Owl expression={moment.expression} size={size} bounce={celebrate} />
+      </span>
       <p className="mt-2 max-w-[19rem] text-[0.92rem] leading-relaxed text-muted">
         {moment.line}
       </p>

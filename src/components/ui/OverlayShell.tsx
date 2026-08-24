@@ -8,6 +8,8 @@ type OverlayShellProps = {
   onClose: () => void
   children: ReactNode
   footer?: ReactNode
+  /** Replaces the footer's own chrome, for panels that paint themselves. */
+  footerClass?: string
   /** Thin progress line under the header, 0–100. */
   progress?: number
 }
@@ -19,6 +21,7 @@ export default function OverlayShell({
   onClose,
   children,
   footer,
+  footerClass,
   progress,
 }: OverlayShellProps) {
   return (
@@ -68,7 +71,12 @@ export default function OverlayShell({
       </div>
 
       {footer && (
-        <div className="border-t border-line bg-ink/90 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl">
+        <div
+          className={
+            footerClass ??
+            'border-t border-line bg-ink/90 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl'
+          }
+        >
           <div className="mx-auto w-full max-w-md px-5 pt-3">{footer}</div>
         </div>
       )}

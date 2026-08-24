@@ -62,14 +62,13 @@ the learner's daily goal.
 
 ## The owl
 
-`src/components/Owl.tsx` is the mascot: one SVG, flat saturated fills, no
-gradients. A head-dominant silhouette with feather tufts built into the outline,
-a barn-owl heart face — the one shape that says "owl" with no other help — and
-big dark eyes as the highest-contrast element in the mark. Eight expressions
-(`happy`, `excited`, `proud`, `focused`, `thinking`, `encouraging`, `surprised`,
-`sleepy`) are composed from swappable eyes, brows, beak, head tilt and pose
-rather than eight separate drawings, and a `mark` variant drops the fine detail
-below about 32px.
+`src/components/Owl.tsx` is the mascot: one SVG, flat fills, no outlines, drawn
+for appeal rather than restraint. Round shapes stacked into a chunky silhouette,
+eyes taking up most of the face, and wings that behave like arms so the
+character can wave and cheer. Eight expressions (`happy`, `excited`, `proud`,
+`focused`, `thinking`, `encouraging`, `surprised`, `sleepy`) are composed from
+swappable eyes, brows, beak, head tilt and pose rather than eight separate
+drawings, and a `mark` variant drops the fine detail below about 32px.
 
 Its palette lives in CSS custom properties (`--owl-body`, `--owl-disc`,
 `--owl-beak`, …) in `index.css`, so retuning the character is a token change
